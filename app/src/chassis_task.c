@@ -8,8 +8,6 @@ extern Remote_t g_remote;
 
 float chassis_rad;
 
-const float OUTPUT_LIMIT = 0;
-
 const float FRONT_LEFT_KP = 0.0f;
 const float FRONT_LEFT_KD = 0.0f;
 const float FRONT_LEFT_KF = 0.0f;
@@ -54,7 +52,7 @@ void Chassis_Task_Init()
                 .kp = FRONT_LEFT_KP,
                 .kd = FRONT_LEFT_KD,
                 .kf = FRONT_LEFT_KF,
-                .output_limit = OUTPUT_LIMIT,
+                .output_limit = M2006_MAX_CURRENT,
             }
     };
 
@@ -69,7 +67,7 @@ void Chassis_Task_Init()
                 .kp = FRONT_RIGHT_KP,
                 .kd = FRONT_RIGHT_KD,
                 .kf = FRONT_RIGHT_KF,
-                .output_limit = OUTPUT_LIMIT,
+                .output_limit = M2006_MAX_CURRENT,
             }
     };
 
@@ -84,7 +82,7 @@ void Chassis_Task_Init()
                 .kp = BACK_LEFT_KP,
                 .kd = BACK_LEFT_KD,
                 .kf = BACK_LEFT_KF,
-                .output_limit = OUTPUT_LIMIT,
+                .output_limit = M2006_MAX_CURRENT,
             }
     };
 
@@ -99,17 +97,18 @@ void Chassis_Task_Init()
                 .kp = BACK_RIGHT_KP,
                 .kd = BACK_RIGHT_KD,
                 .kf = BACK_RIGHT_KF,
-                .output_limit = OUTPUT_LIMIT,
+                .output_limit = M2006_MAX_CURRENT,
             }
     };
 
-    frontLeftMotor = DJI_MOTOR_INIT(&front_left_speed_config, M2006);
-    frontRightMotor = DJI_MOTOR_INIT(&front_right_speed_config, M2006);
-    backLeftMotor = DJI_MOTOR_INIT(&back_left_speed_config, M2006);
-    backRightMotor = DJI_MOTOR_INIT(&back_right_speed_config, M2006);
+    frontLeftMotor = DJI_Motor_Init(&front_left_speed_config, M2006);
+    frontRightMotor = DJI_Motor_Init(&front_right_speed_config, M2006);
+    backLeftMotor = DJI_Motor_Init(&back_left_speed_config, M2006);
+    backRightMotor = DJI_Motor_Init(&back_right_speed_config, M2006);
 }
 
 void Chassis_Ctrl_Loop()
 {
     // Control loop for the chassis
+    
 }
