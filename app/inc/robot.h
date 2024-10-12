@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "user_math.h"
+#include "dji_motor.h"
 
 typedef enum Robot_State_e
 {
