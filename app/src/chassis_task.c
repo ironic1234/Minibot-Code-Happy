@@ -1,7 +1,7 @@
 #include "chassis_task.h"
 
-#include "robot.h"
 #include "remote.h"
+#include "robot.h"
 
 extern Robot_State_t g_robot_state;
 extern Remote_t g_remote;
@@ -107,8 +107,6 @@ void Chassis_Task_Init()
     backRightMotor = DJI_Motor_Init(&back_right_speed_config, M2006);
 }
 
-void Chassis_Ctrl_Loop()
-{
-    // Control loop for the chassis
-    
+void Chassis_Ctrl_Loop() {
+  // Control loop for the chassis
 }
