@@ -16,13 +16,6 @@ void Gimbal_Task_Init() {
     .offset = 0,
     .control_mode = POSITION_CONTROL,
     .motor_reversal = MOTOR_REVERSAL_NORMAL,
-    .velocity_pid = 
-      {
-        .kp = 0.00f;
-        .ki = 0.00f, 
-        .kd = 0.00f, 
-        .output_limit = M2006_MAX_CURRENT,
-      }
     .angle_pid = 
       {
 	.kp = 0.00f,
