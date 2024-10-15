@@ -1,0 +1,28 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+ColumnLimit: 0
+BreakBeforeBraces: Allman
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: true  # Allows short case labels on a single line
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: true  # Allows short if statements on a single line
+AllowShortLoopsOnASingleLine: true
+SpaceBeforeParens: ControlStatements
+SpaceAfterCStyleCast: true
+SpacesInParentheses: false
+SpacesInAngles: false
+SpacesInContainerLiterals: false
+SpaceAfterTemplateKeyword: true
+SortIncludes: false
+IncludeCategories:
+  - Regex: '^<.*>'
+    Priority: 1
+  - Regex: '^\.\./.*'
+    Priority: 2
+  - Regex: '^\./.*'
+    Priority: 3
+  - Regex: '.*'
+    Priority: 4
+CommentPragmas: 'Keep'
+AlignConsecutiveDeclarations: false
