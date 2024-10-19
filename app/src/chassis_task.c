@@ -2,7 +2,6 @@
 
 #include "remote.h"
 #include "robot.h"
-#include "omni_kinematics.c"
 
 extern Robot_State_t g_robot_state;
 extern Remote_t g_remote;
@@ -101,6 +100,16 @@ void Chassis_Task_Init()
     backRightMotor = DJI_Motor_Init(&back_right_speed_config, M2006);
 }
 
+void Chassis_Ctrl_Loop()
+{
+    // Control loop for the chassis
+    mapping(g_robot_state.chassis, &mSpeeds);
+    desaturation(&mSpeeds);
+    setMotors();
+}
+
+
+
 void setMotors()
 {
     DJI_Motor_Set_Velocity(frontLeftMotor, mSpeeds.vel1);
@@ -109,11 +118,35 @@ void setMotors()
     DJI_Motor_Set_Velocity(frontRightMotor, mSpeeds.vel4);
 }
 
-void Chassis_Ctrl_Loop()
-{
-    // Control loop for the chassis
+void mapping(Chassis_State_t speeds, motorSpeeds_t* mSpeeds){
+    (*mSpeeds).vel1 = -1*sin(THETA)*speeds.x_speed + cos(THETA)*speeds.y_speed + DIST*speeds.omega;
+    (*mSpeeds).vel2 = -1*cos(THETA)*speeds.x_speed - sin(THETA)*speeds.y_speed + DIST*speeds.omega;
+    (*mSpeeds).vel3 = sin(THETA)*speeds.x_speed - cos(THETA)*speeds.y_speed + DIST*speeds.omega;
+    (*mSpeeds).vel4 = cos(THETA)*speeds.x_speed + sin(THETA)*speeds.y_speed + DIST*speeds.omega;
+}
 
-    mapping(g_robot_state.chassis, &mSpeeds);
-    desaturation(&mSpeeds);
-    setMotors();
+void desaturation(motorSpeeds_t* mSpeeds){
+    float bigSpeed = max((*mSpeeds).vel1, (*mSpeeds).vel2, (*mSpeeds).vel3, (*mSpeeds).vel4);
+
+    if (bigSpeed > MAX_SPEED){
+        float ratio = MAX_SPEED/bigSpeed;
+
+        (*mSpeeds).vel1 *= ratio;
+        (*mSpeeds).vel2 *= ratio;
+        (*mSpeeds).vel3 *= ratio;
+        (*mSpeeds).vel4 *= ratio;
+    }
+}
+
+float max(float a, float b, float c, float d){
+    float m = max2(a, b);
+    m = max2(m, c);
+    m = max2(m, d);
+
+    return m;
+}
+
+float max2(float a, float b){
+    if (a > b) return a;
+    return b;
 }
