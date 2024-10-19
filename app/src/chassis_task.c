@@ -2,6 +2,12 @@
 
 #include "remote.h"
 #include "robot.h"
+#include <math.h>
+
+#define THETA M_PI
+#define RAD 0
+#define DIST 0
+#define MAX_SPEED 0
 
 extern Robot_State_t g_robot_state;
 extern Remote_t g_remote;
