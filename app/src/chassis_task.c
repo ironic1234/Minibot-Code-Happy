@@ -9,14 +9,14 @@
 #define DIST 0.26
 #define MAX_SPEED 0.5
 
-#define KP 0.0f
+#define KP 500.0f
 #define KD 0.0f
 #define KF 0.0f
 
 extern Robot_State_t g_robot_state;
 extern Remote_t g_remote;
 
-motorSpeeds_t mSpeeds;
+motorSpeeds_t mSpeeds = {0,0,0,0};
 
 float chassis_rad;
 
@@ -27,7 +27,7 @@ DJI_Motor_Handle_t backLeftMotor;
 DJI_Motor_Handle_t backRightMotor;
 
 DJI_Motor_Handle_t* motors[4] = {&frontLeftMotor, &frontRightMotor, &backLeftMotor, &backRightMotor};
-int motor_ids[4] = {0, 1, 2, 3};
+int motor_ids[4] = {1, 4, 2, 3};
 
 void Chassis_Task_Init()
 {
@@ -45,7 +45,7 @@ void Chassis_Task_Init()
 
     for (int i = 0; i < 4; i++)
     {
-        config.can_bus = motor_ids[i];
+        config.can_bus = 1;
         config.speed_controller_id = motor_ids[i];
         motors[i] = DJI_Motor_Init(&config, M2006);
     }
