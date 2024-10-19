@@ -32,7 +32,10 @@ int motor_ids[4] = {1, 4, 2, 3};
 void Chassis_Task_Init()
 {
     // Init chassis hardware
-    Motor_Config_t config = {
+
+    for (int i = 0; i < 4; i++)
+    {
+        Motor_Config_t config = {
         .offset = 0,
         .control_mode = VELOCITY_CONTROL,
         .motor_reversal = MOTOR_REVERSAL_NORMAL,
@@ -42,9 +45,6 @@ void Chassis_Task_Init()
             .kf = KF,
             .output_limit = M2006_MAX_CURRENT,
         }};
-
-    for (int i = 0; i < 4; i++)
-    {
         config.can_bus = 1;
         config.speed_controller_id = motor_ids[i];
         motors[i] = DJI_Motor_Init(&config, M2006);
