@@ -101,6 +101,7 @@ void Process_Remote_Input()
 
 void Process_Chassis_Control()
 {
+    Chassis_Ctrl_Loop();
 }
 
 void Process_Gimbal_Control()
