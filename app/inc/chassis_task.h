@@ -1,5 +1,6 @@
 #ifndef CHASSIS_TASK_H
 #define CHASSIS_TASK_H
+#include "robot.h"
 
 typedef struct motorSpeeds{
     double vel1, vel2, vel3, vel4;
