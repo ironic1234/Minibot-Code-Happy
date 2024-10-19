@@ -21,12 +21,12 @@ motorSpeeds_t mSpeeds;
 float chassis_rad;
 
 
-DJI_Motor_Handle_t *frontLeftMotor;
-DJI_Motor_Handle_t *frontRightMotor;
-DJI_Motor_Handle_t *backLeftMotor;
-DJI_Motor_Handle_t *backRightMotor;
+DJI_Motor_Handle_t frontLeftMotor;
+DJI_Motor_Handle_t frontRightMotor;
+DJI_Motor_Handle_t backLeftMotor;
+DJI_Motor_Handle_t backRightMotor;
 
-DJI_Motor_Handle_t *motors[4] = {&frontLeftMotor, &frontRightMotor, &backLeftMotor, &backRightMotor};
+DJI_Motor_Handle_t* motors[4] = {&frontLeftMotor, &frontRightMotor, &backLeftMotor, &backRightMotor};
 int motor_ids[4] = {0, 1, 2, 3};
 
 void Chassis_Task_Init()
@@ -65,10 +65,10 @@ void Chassis_Ctrl_Loop()
 
 void setMotors()
 {
-    DJI_Motor_Set_Velocity(frontLeftMotor, mSpeeds.vel1);
-    DJI_Motor_Set_Velocity(backLeftMotor, mSpeeds.vel2);
-    DJI_Motor_Set_Velocity(backRightMotor, mSpeeds.vel3);
-    DJI_Motor_Set_Velocity(frontRightMotor, mSpeeds.vel4);
+    DJI_Motor_Set_Velocity(&frontLeftMotor, mSpeeds.vel1 / (2 * PI) * 60);  //Convert to RPM because PID calculations are in RPM
+    DJI_Motor_Set_Velocity(&backLeftMotor, mSpeeds.vel2 / (2 * PI) * 60);
+    DJI_Motor_Set_Velocity(&backRightMotor, mSpeeds.vel3 / (2 * PI) * 60);
+    DJI_Motor_Set_Velocity(&frontRightMotor, mSpeeds.vel4 / (2 * PI) * 60);
 }
 
 void mapping(Chassis_State_t speeds, motorSpeeds_t* mSpeeds){
