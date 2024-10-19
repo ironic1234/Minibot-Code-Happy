@@ -108,5 +108,9 @@ void Chassis_Task_Init()
 }
 
 void Chassis_Ctrl_Loop() {
-  // Control loop for the chassis
+    // Control loop for the chassis
+    double xTargetVel = 0;    //Somehow get inputs???
+    double yTargetVel = 0;    //Somehow get inputs???\
+
+
 }
