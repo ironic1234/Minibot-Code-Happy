@@ -2,9 +2,12 @@
 
 #include "remote.h"
 #include "robot.h"
+#include "omni_kinematics.c"
 
 extern Robot_State_t g_robot_state;
 extern Remote_t g_remote;
+
+motorSpeeds_t mSpeeds;
 
 float chassis_rad;
 
@@ -97,10 +100,18 @@ void Chassis_Task_Init() {
   backRightMotor = DJI_Motor_Init(&back_right_speed_config, M2006);
 }
 
+void setMotors(){
+    DJI_Motor_Set_Velocity(&frontLeftMotor, mSpeeds->vel1);
+    DJI_Motor_Set_Velocity(&backLeftMotor, mSpeeds->vel2);
+    DJI_Motor_Set_Velocity(&backRightMotor, mSpeeds->vel3);
+    DJI_Motor_Set_Velocity(&frontRightMotor, mSpeeds->vel4);
+}
+
 void Chassis_Ctrl_Loop() {
     // Control loop for the chassis
-    double xTargetVel = 0;    //Somehow get inputs???
-    double yTargetVel = 0;    //Somehow get inputs???\
-
+    
+    mapping(g_robot_state.chassis, &mSpeeds);
+    desaturation(&mSpeeds);
+    setMotors();
 
 }
