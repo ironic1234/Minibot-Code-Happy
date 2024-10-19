@@ -12,7 +12,7 @@ typedef struct motorSpeeds{
 
 float max(float, float, float, float);
 float max2(float, float);
-void mapping(Chassis_State_t, motorSpeeds*);
+void mapping(Chassis_State_t, motorSpeeds_t*);
 void desaturation(motorSpeeds_t*);
 
 void mapping(Chassis_State_t speeds, motorSpeeds_t* mSpeeds){
