@@ -6,6 +6,11 @@
 #define DIST 0
 #define MAX_SPEED 0
 
+float max(float, float, float, float);
+float max2(float, float);
+void mapping(Chassis_State_t, motorSpeeds*);
+void desaturation(motorSpeeds_t*);
+
 typedef struct motorSpeeds{
     double vel1, vel2, vel3, vel4;
 } motorSpeeds_t;
