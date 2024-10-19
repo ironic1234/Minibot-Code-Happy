@@ -4,10 +4,14 @@
 #include "robot.h"
 #include <math.h>
 
-#define THETA M_PI
-#define RAD 0
-#define DIST 0
-#define MAX_SPEED 0
+#define THETA PI / 4
+#define RAD 0.035
+#define DIST 0.26
+#define MAX_SPEED 0.5
+
+#define KP 0.0f
+#define KD 0.0f
+#define KF 0.0f
 
 extern Robot_State_t g_robot_state;
 extern Remote_t g_remote;
@@ -16,98 +20,41 @@ motorSpeeds_t mSpeeds;
 
 float chassis_rad;
 
-const float FRONT_LEFT_KP = 0.0f;
-const float FRONT_LEFT_KD = 0.0f;
-const float FRONT_LEFT_KF = 0.0f;
-const float FRONT_LEFT_CAN_ID = 0;
-const float FRONT_LEFT_CONTROLLER_ID = 0;
-
-const float FRONT_RIGHT_KP = 0.0f;
-const float FRONT_RIGHT_KD = 0.0f;
-const float FRONT_RIGHT_KF = 0.0f;
-const float FRONT_RIGHT_CAN_ID = 0;
-const float FRONT_RIGHT_CONTROLLER_ID = 0;
-
-const float BACK_LEFT_KP = 0.0f;
-const float BACK_LEFT_KD = 0.0f;
-const float BACK_LEFT_KF = 0.0f;
-const float BACK_LEFT_CAN_ID = 0;
-const float BACK_LEFT_CONTROLLER_ID = 0;
-
-const float BACK_RIGHT_KP = 0.0f;
-const float BACK_RIGHT_KD = 0.0f;
-const float BACK_RIGHT_KF = 0.0f;
-const float BACK_RIGHT_CAN_ID = 0;
-const float BACK_RIGHT_CONTROLLER_ID = 0;
 
 DJI_Motor_Handle_t *frontLeftMotor;
 DJI_Motor_Handle_t *frontRightMotor;
 DJI_Motor_Handle_t *backLeftMotor;
 DJI_Motor_Handle_t *backRightMotor;
 
+DJI_Motor_Handle_t *motors[4] = {&frontLeftMotor, &frontRightMotor, &backLeftMotor, &backRightMotor};
+int motor_ids[4] = {0, 1, 2, 3};
+
 void Chassis_Task_Init()
 {
     // Init chassis hardware
-    Motor_Config_t front_left_speed_config = {
-        .can_bus = FRONT_LEFT_CAN_ID,
-        .speed_controller_id = FRONT_LEFT_CONTROLLER_ID,
+    Motor_Config_t config = {
         .offset = 0,
         .control_mode = VELOCITY_CONTROL,
         .motor_reversal = MOTOR_REVERSAL_NORMAL,
         .velocity_pid = {
-            .kp = FRONT_LEFT_KP,
-            .kd = FRONT_LEFT_KD,
-            .kf = FRONT_LEFT_KF,
+            .kp = KP,
+            .kd = KD,
+            .kf = KF,
             .output_limit = M2006_MAX_CURRENT,
         }};
 
-    Motor_Config_t front_right_speed_config = {
-        .can_bus = FRONT_RIGHT_CAN_ID,
-        .speed_controller_id = FRONT_RIGHT_CONTROLLER_ID,
-        .offset = 0,
-        .control_mode = VELOCITY_CONTROL,
-        .motor_reversal = MOTOR_REVERSAL_NORMAL,
-        .velocity_pid = {
-            .kp = FRONT_RIGHT_KP,
-            .kd = FRONT_RIGHT_KD,
-            .kf = FRONT_RIGHT_KF,
-            .output_limit = M2006_MAX_CURRENT,
-        }};
-
-    Motor_Config_t back_left_speed_config = {
-        .can_bus = BACK_LEFT_CAN_ID,
-        .speed_controller_id = BACK_LEFT_CONTROLLER_ID,
-        .offset = 0,
-        .control_mode = VELOCITY_CONTROL,
-        .motor_reversal = MOTOR_REVERSAL_NORMAL,
-        .velocity_pid = {
-            .kp = BACK_LEFT_KP,
-            .kd = BACK_LEFT_KD,
-            .kf = BACK_LEFT_KF,
-            .output_limit = M2006_MAX_CURRENT,
-        }};
-
-    Motor_Config_t back_right_speed_config = {
-        .can_bus = BACK_RIGHT_CAN_ID,
-        .speed_controller_id = BACK_RIGHT_CONTROLLER_ID,
-        .offset = 0,
-        .control_mode = VELOCITY_CONTROL,
-        .motor_reversal = MOTOR_REVERSAL_NORMAL,
-        .velocity_pid = {
-            .kp = BACK_RIGHT_KP,
-            .kd = BACK_RIGHT_KD,
-            .kf = BACK_RIGHT_KF,
-            .output_limit = M2006_MAX_CURRENT,
-        }};
-
-    frontLeftMotor = DJI_Motor_Init(&front_left_speed_config, M2006);
-    frontRightMotor = DJI_Motor_Init(&front_right_speed_config, M2006);
-    backLeftMotor = DJI_Motor_Init(&back_left_speed_config, M2006);
-    backRightMotor = DJI_Motor_Init(&back_right_speed_config, M2006);
+    for(int i = 0; i < 4; i++){
+        config.can_bus = motor_ids[i];
+        config.speed_controller_id = motor_ids[i];
+        motors[i] = DJI_Motor_Init(&config, M2006);
+    }
 }
 
 void Chassis_Ctrl_Loop()
 {
+    g_robot_state.chassis.x_speed = g_robot_state.input.vx;
+    g_robot_state.chassis.y_speed = g_robot_state.input.vy;
+
     // Control loop for the chassis
     mapping(g_robot_state.chassis, &mSpeeds);
     desaturation(&mSpeeds);
