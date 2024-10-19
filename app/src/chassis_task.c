@@ -4,7 +4,7 @@
 #include "robot.h"
 #include <math.h>
 
-#define THETA PI / 4
+#define THETA PI / 4 
 #define RAD 0.035
 #define DIST 0.26
 #define MAX_SPEED 0.5
@@ -43,7 +43,8 @@ void Chassis_Task_Init()
             .output_limit = M2006_MAX_CURRENT,
         }};
 
-    for(int i = 0; i < 4; i++){
+    for (int i = 0; i < 4; i++)
+    {
         config.can_bus = motor_ids[i];
         config.speed_controller_id = motor_ids[i];
         motors[i] = DJI_Motor_Init(&config, M2006);
@@ -54,14 +55,13 @@ void Chassis_Ctrl_Loop()
 {
     g_robot_state.chassis.x_speed = g_robot_state.input.vx;
     g_robot_state.chassis.y_speed = g_robot_state.input.vy;
+    g_robot_state.chassis.omega = g_robot_state.input.vomega;
 
     // Control loop for the chassis
     mapping(g_robot_state.chassis, &mSpeeds);
     desaturation(&mSpeeds);
     setMotors();
 }
-
-
 
 void setMotors()
 {
@@ -71,18 +71,21 @@ void setMotors()
     DJI_Motor_Set_Velocity(&frontRightMotor, mSpeeds.vel4 / (2 * PI) * 60);
 }
 
-void mapping(Chassis_State_t speeds, motorSpeeds_t* mSpeeds){
-    (*mSpeeds).vel1 = -1*sin(THETA)*speeds.x_speed + cos(THETA)*speeds.y_speed + DIST*speeds.omega;
-    (*mSpeeds).vel2 = -1*cos(THETA)*speeds.x_speed - sin(THETA)*speeds.y_speed + DIST*speeds.omega;
-    (*mSpeeds).vel3 = sin(THETA)*speeds.x_speed - cos(THETA)*speeds.y_speed + DIST*speeds.omega;
-    (*mSpeeds).vel4 = cos(THETA)*speeds.x_speed + sin(THETA)*speeds.y_speed + DIST*speeds.omega;
+void mapping(Chassis_State_t speeds, motorSpeeds_t *mSpeeds)
+{
+    (*mSpeeds).vel1 = -1 * sin(THETA) * speeds.x_speed + cos(THETA) * speeds.y_speed + DIST * speeds.omega;
+    (*mSpeeds).vel2 = -1 * cos(THETA) * speeds.x_speed - sin(THETA) * speeds.y_speed + DIST * speeds.omega;
+    (*mSpeeds).vel3 = sin(THETA) * speeds.x_speed - cos(THETA) * speeds.y_speed + DIST * speeds.omega;
+    (*mSpeeds).vel4 = cos(THETA) * speeds.x_speed + sin(THETA) * speeds.y_speed + DIST * speeds.omega;
 }
 
-void desaturation(motorSpeeds_t* mSpeeds){
+void desaturation(motorSpeeds_t *mSpeeds)
+{
     float bigSpeed = max((*mSpeeds).vel1, (*mSpeeds).vel2, (*mSpeeds).vel3, (*mSpeeds).vel4);
 
-    if (bigSpeed > MAX_SPEED){
-        float ratio = MAX_SPEED/bigSpeed;
+    if (bigSpeed > MAX_SPEED)
+    {
+        float ratio = MAX_SPEED / bigSpeed;
 
         (*mSpeeds).vel1 *= ratio;
         (*mSpeeds).vel2 *= ratio;
@@ -91,7 +94,8 @@ void desaturation(motorSpeeds_t* mSpeeds){
     }
 }
 
-float max(float a, float b, float c, float d){
+float max(float a, float b, float c, float d)
+{
     float m = max2(a, b);
     m = max2(m, c);
     m = max2(m, d);
@@ -99,7 +103,8 @@ float max(float a, float b, float c, float d){
     return m;
 }
 
-float max2(float a, float b){
+float max2(float a, float b)
+{
     if (a > b) return a;
     return b;
 }
