@@ -11,10 +11,10 @@ typedef struct motorSpeeds{
 } motorSpeeds_t;
 
 void mapping(Chassis_State_t speeds, motorSpeeds_t* mSpeeds){
-    (*mSpeeds).vel1 = -1*sin(THETA)*speeds.xVel + cos(THETA)*speeds.yVel + DIST*speeds.w;
-    (*mSpeeds).vel2 = -1*cos(THETA)*speeds.xVel - sin(THETA)*speeds.yVel + DIST*speeds.w;
-    (*mSpeeds).vel3 = sin(THETA)*speeds.xVel - cos(THETA)*speeds.yVel + DIST*speeds.w;
-    (*mSpeeds).vel4 = cos(THETA)*speeds.xVel + sin(THETA)*speeds.yVel + DIST*speeds.w;
+    (*mSpeeds).vel1 = -1*sin(THETA)*speeds.x_speed + cos(THETA)*speeds.y_speed + DIST*speeds.omega;
+    (*mSpeeds).vel2 = -1*cos(THETA)*speeds.x_speed - sin(THETA)*speeds.y_speed + DIST*speeds.omega;
+    (*mSpeeds).vel3 = sin(THETA)*speeds.x_speed - cos(THETA)*speeds.y_speed + DIST*speeds.omega;
+    (*mSpeeds).vel4 = cos(THETA)*speeds.x_speed + sin(THETA)*speeds.y_speed + DIST*speeds.omega;
 }
 
 void desaturation(motorSpeeds_t* mSpeeds){
