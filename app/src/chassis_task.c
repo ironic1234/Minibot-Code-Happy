@@ -1,8 +1,9 @@
 #include "chassis_task.h"
+#include "dji_motor.h"
 #include "omni_kinematics.h"
 
-#include "remote.h"
 #include "robot.h"
+#include "remote.h"
 
 #define KP 500.0f
 #define KD 0.0f
@@ -54,10 +55,15 @@ void Chassis_Ctrl_Loop()
 
 void setMotors()
 {
-    DJI_Motor_Set_Velocity(motors[0], mSpeeds.vel1 / (2 * PI) * 60); // Convert to RPM because PID calculations are in RPM
-    DJI_Motor_Set_Velocity(motors[1], mSpeeds.vel2 / (2 * PI) * 60);
-    DJI_Motor_Set_Velocity(motors[2], mSpeeds.vel3 / (2 * PI) * 60);
-    DJI_Motor_Set_Velocity(motors[3], mSpeeds.vel4 / (2 * PI) * 60);
+    FOR_EACH_MOTOR_SPEED(mSpeeds, speed, id)
+    {
+        DJI_Motor_Set_Velocity(motors[id], *speed / (2 * PI) * 60); // Convert to RPM because PID calculations are in RPM
+    }
+
+    // DJI_Motor_Set_Velocity(motors[0], mSpeeds.vel1 / (2 * PI) * 60);
+    // DJI_Motor_Set_Velocity(motors[1], mSpeeds.vel2 / (2 * PI) * 60);
+    // DJI_Motor_Set_Velocity(motors[2], mSpeeds.vel3 / (2 * PI) * 60);
+    // DJI_Motor_Set_Velocity(motors[3], mSpeeds.vel4 / (2 * PI) * 60);
 }
 
 // void mapping(Chassis_State_t speeds, motorSpeeds_t *mSpeeds)
