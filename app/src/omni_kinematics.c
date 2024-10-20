@@ -10,10 +10,10 @@ float max(float x, float y)
 
 void mapping(Chassis_State_t speeds, motorSpeeds_t *mSpeeds)
 {
-    mSpeeds->vel1 = (-SIN45 * speeds.x_speed + COS45 * speeds.y_speed + WHEEL_BASE / 2.0 * speeds.omega) / RADIUS;
-    mSpeeds->vel2 = (-COS45 * speeds.x_speed - SIN45 * speeds.y_speed + WHEEL_BASE / 2.0 * speeds.omega) / RADIUS;
-    mSpeeds->vel3 = (SIN45 * speeds.x_speed - COS45 * speeds.y_speed + WHEEL_BASE / 2.0 * speeds.omega) / RADIUS;
-    mSpeeds->vel4 = (COS45 * speeds.x_speed + SIN45 * speeds.y_speed + WHEEL_BASE / 2.0 * speeds.omega) / RADIUS;
+    mSpeeds->vel1 = (-SIN45 * speeds.x_speed + COS45 * speeds.y_speed + WHEEL_BASE * speeds.omega) / RADIUS;
+    mSpeeds->vel2 = (-COS45 * speeds.x_speed - SIN45 * speeds.y_speed + WHEEL_BASE * speeds.omega) / RADIUS;
+    mSpeeds->vel3 = (SIN45 * speeds.x_speed - COS45 * speeds.y_speed + WHEEL_BASE * speeds.omega) / RADIUS;
+    mSpeeds->vel4 = (COS45 * speeds.x_speed + SIN45 * speeds.y_speed + WHEEL_BASE * speeds.omega) / RADIUS;
 }
 
 void desaturation(motorSpeeds_t *mSpeeds)

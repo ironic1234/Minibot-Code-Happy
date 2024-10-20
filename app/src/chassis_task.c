@@ -6,7 +6,7 @@
 #include "remote.h"
 
 #define KP 500.0f
-#define KD 0.0f
+#define KI 0.0f
 #define KF 0.0f
 
 extern Robot_State_t g_robot_state;
@@ -17,7 +17,7 @@ motorSpeeds_t mSpeeds = {0, 0, 0, 0};
 float chassis_rad;
 
 DJI_Motor_Handle_t *motors[4] = {NULL, NULL, NULL, NULL};
-int motor_ids[4] = {1, 4, 2, 3};
+int motor_ids[4] = {1, 2, 3, 4};
 
 void Chassis_Task_Init()
 {
@@ -33,7 +33,7 @@ void Chassis_Task_Init()
             .motor_reversal = MOTOR_REVERSAL_NORMAL,
             .velocity_pid = {
                 .kp = KP,
-                .kd = KD,
+                .ki = KI,
                 .kf = KF,
                 .output_limit = M2006_MAX_CURRENT,
             }};
