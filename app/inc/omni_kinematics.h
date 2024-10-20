@@ -8,7 +8,7 @@
 #define SIN45 0.70710678818
 #define COS45 0.70710678818
 
-float max(float, float);
+float max(float x, float y);
 
-void mapping(Chassis_State_t, motorSpeeds_t *);
-void desaturation(motorSpeeds_t *);
+void mapping(Chassis_State_t speeds, motorSpeeds_t *mSpeeds);
+void desaturation(motorSpeeds_t *mSpeeds);

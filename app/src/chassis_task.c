@@ -57,7 +57,7 @@ void setMotors()
 {
     FOR_EACH_MOTOR_SPEED(mSpeeds, speed, id)
     {
-        DJI_Motor_Set_Velocity(motors[id], *speed / (2 * PI) * 60); // Convert to RPM because PID calculations are in RPM
+        DJI_Motor_Set_Velocity(motors[id], speed / (2 * PI) * 60); // Convert to RPM because PID calculations are in RPM
     }
 
     // DJI_Motor_Set_Velocity(motors[0], mSpeeds.vel1 / (2 * PI) * 60);
