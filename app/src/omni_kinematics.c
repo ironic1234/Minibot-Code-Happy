@@ -1,6 +1,7 @@
 #include "chassis_task.h"
 #include "omni_kinematics.h"
 #include "robot.h"
+#include <math.h>
 
 float max(float x, float y)
 {
@@ -17,7 +18,7 @@ void mapping(Chassis_State_t speeds, motorSpeeds_t *mSpeeds)
 
 void desaturation(motorSpeeds_t *mSpeeds)
 {
-    float maximum = max(max(mSpeeds->vel1, mSpeeds->vel2), max(mSpeeds->vel3, mSpeeds->vel4));
+    float maximum = max(max(fabs(mSpeeds->vel1), fabs(mSpeeds->vel2)), max(fabs(mSpeeds->vel3), fabs(mSpeeds->vel4)));
 
     if (maximum > MAX_SPEED)
     {

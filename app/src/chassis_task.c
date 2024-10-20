@@ -3,7 +3,6 @@
 
 #include "remote.h"
 #include "robot.h"
-#include <math.h>
 
 #define KP 500.0f
 #define KD 0.0f
