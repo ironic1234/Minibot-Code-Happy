@@ -14,8 +14,6 @@ extern Remote_t g_remote;
 
 motorSpeeds_t mSpeeds = {0, 0, 0, 0};
 
-float chassis_rad;
-
 DJI_Motor_Handle_t *motors[4] = {NULL, NULL, NULL, NULL};
 int motor_ids[4] = {1, 2, 3, 4};
 
@@ -55,15 +53,10 @@ void Chassis_Ctrl_Loop()
 
 void setMotors()
 {
-    FOR_EACH_MOTOR_SPEED(mSpeeds, speed, id)
-    {
-        DJI_Motor_Set_Velocity(motors[id], speed / (2 * PI) * 60); // Convert to RPM because PID calculations are in RPM
-    }
-
-    // DJI_Motor_Set_Velocity(motors[0], mSpeeds.vel1 / (2 * PI) * 60);
-    // DJI_Motor_Set_Velocity(motors[1], mSpeeds.vel2 / (2 * PI) * 60);
-    // DJI_Motor_Set_Velocity(motors[2], mSpeeds.vel3 / (2 * PI) * 60);
-    // DJI_Motor_Set_Velocity(motors[3], mSpeeds.vel4 / (2 * PI) * 60);
+    DJI_Motor_Set_Velocity(motors[0], mSpeeds.vel1 / (2 * PI) * 60); // Convert as PID calculations are done in RPM
+    DJI_Motor_Set_Velocity(motors[1], mSpeeds.vel2 / (2 * PI) * 60);
+    DJI_Motor_Set_Velocity(motors[2], mSpeeds.vel3 / (2 * PI) * 60);
+    DJI_Motor_Set_Velocity(motors[3], mSpeeds.vel4 / (2 * PI) * 60);
 }
 
 // void mapping(Chassis_State_t speeds, motorSpeeds_t *mSpeeds)
