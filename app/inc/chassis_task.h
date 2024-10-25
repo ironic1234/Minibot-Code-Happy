@@ -3,7 +3,7 @@
 
 typedef struct
 {
-    double vel1, vel2, vel3, vel4;
+    float vel1, vel2, vel3, vel4;
 } motorSpeeds_t;
 
 // Function prototypes
