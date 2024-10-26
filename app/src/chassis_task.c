@@ -41,14 +41,19 @@ void Chassis_Task_Init()
 
 void Chassis_Ctrl_Loop()
 {
-    g_robot_state.chassis.x_speed = g_robot_state.input.vx;
-    g_robot_state.chassis.y_speed = g_robot_state.input.vy;
-    g_robot_state.chassis.omega = g_robot_state.input.vomega;
+    // g_robot_state.chassis.x_speed = g_robot_state.input.vx;
+    // g_robot_state.chassis.y_speed = g_robot_state.input.vy;
+    // g_robot_state.chassis.omega = g_robot_state.input.vomega;
 
-    // Control loop for the chassis
-    mapping(g_robot_state.chassis, &mSpeeds);
-    desaturation(&mSpeeds);
-    setMotors();
+    // // Control loop for the chassis
+    // mapping(g_robot_state.chassis, &mSpeeds);
+    // desaturation(&mSpeeds);
+    // setMotors();
+
+    DJI_Motor_Set_Velocity(motors[0], 0); // Convert as PID calculations are done in RPM
+    DJI_Motor_Set_Velocity(motors[1], 0);
+    DJI_Motor_Set_Velocity(motors[2], 0);
+    DJI_Motor_Set_Velocity(motors[3], 0);
 }
 
 void setMotors()
