@@ -41,27 +41,22 @@ void Chassis_Task_Init()
 
 void Chassis_Ctrl_Loop()
 {
-    // g_robot_state.chassis.x_speed = g_robot_state.input.vx;
-    // g_robot_state.chassis.y_speed = g_robot_state.input.vy;
-    // g_robot_state.chassis.omega = g_robot_state.input.vomega;
+    g_robot_state.chassis.x_speed = g_robot_state.input.vx;
+    g_robot_state.chassis.y_speed = g_robot_state.input.vy;
+    g_robot_state.chassis.omega = g_robot_state.input.vomega;
 
-    // // Control loop for the chassis
-    // mapping(g_robot_state.chassis, &mSpeeds);
-    // desaturation(&mSpeeds);
-    // setMotors();
-
-    DJI_Motor_Set_Velocity(motors[0], 0); // Convert as PID calculations are done in RPM
-    DJI_Motor_Set_Velocity(motors[1], 0);
-    DJI_Motor_Set_Velocity(motors[2], 0);
-    DJI_Motor_Set_Velocity(motors[3], 0);
+    // Control loop for the chassis
+    mapping(g_robot_state.chassis, &mSpeeds);
+    desaturation(&mSpeeds);
+    setMotors();
 }
 
 void setMotors()
 {
-    DJI_Motor_Set_Velocity(motors[0], mSpeeds.vel1 / (2 * PI) * 60); // Convert as PID calculations are done in RPM
-    DJI_Motor_Set_Velocity(motors[1], mSpeeds.vel2 / (2 * PI) * 60);
-    DJI_Motor_Set_Velocity(motors[2], mSpeeds.vel3 / (2 * PI) * 60);
-    DJI_Motor_Set_Velocity(motors[3], mSpeeds.vel4 / (2 * PI) * 60);
+    DJI_Motor_Set_Velocity(motors[0], mSpeeds.vel1);
+    DJI_Motor_Set_Velocity(motors[1], mSpeeds.vel2);
+    DJI_Motor_Set_Velocity(motors[2], mSpeeds.vel3);
+    DJI_Motor_Set_Velocity(motors[3], mSpeeds.vel4);
 }
 
 // void mapping(Chassis_State_t speeds, motorSpeeds_t *mSpeeds)
