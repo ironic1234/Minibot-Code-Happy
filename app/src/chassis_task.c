@@ -48,13 +48,8 @@ void Chassis_Ctrl_Loop()
     
 
     // Control loop for the chassis
-    // mapping(g_robot_state.chassis, &mSpeeds);
-    mSpeeds.vel1 = 1;
-    mSpeeds.vel2 = 1;
-    mSpeeds.vel3 = 1;
-    mSpeeds.vel4 = 1;
-
-    // desaturation(&mSpeeds);
+    mapping(g_robot_state.chassis, &mSpeeds);
+    desaturation(&mSpeeds);
     setMotors();
 }
 
