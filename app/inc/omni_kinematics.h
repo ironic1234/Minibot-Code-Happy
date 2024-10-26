@@ -4,6 +4,7 @@
 #define RADIUS 0.035
 #define WHEEL_BASE 0.26
 #define MAX_SPEED 10
+#define MAX_SPEED_RPS 5 / 3.1415
 
 #define SIN45 0.70710678818
 #define COS45 0.70710678818

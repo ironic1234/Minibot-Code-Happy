@@ -41,9 +41,9 @@ void Chassis_Task_Init()
 
 void Chassis_Ctrl_Loop()
 {
-    g_robot_state.chassis.x_speed = g_robot_state.input.vx;
-    g_robot_state.chassis.y_speed = g_robot_state.input.vy;
-    g_robot_state.chassis.omega = g_robot_state.input.vomega;
+    g_robot_state.chassis.x_speed = g_robot_state.input.vx / 660 * MAX_SPEED_RPS * 8191;
+    g_robot_state.chassis.y_speed = g_robot_state.input.vy / 660 * MAX_SPEED_RPS * 8191;
+    g_robot_state.chassis.omega = g_robot_state.input.vomega / 660 * 10;
 
     // Control loop for the chassis
     mapping(g_robot_state.chassis, &mSpeeds);
